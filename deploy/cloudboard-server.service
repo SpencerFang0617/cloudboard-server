@@ -1,0 +1,18 @@
+[Unit]
+Description=CloudBoard clipboard server
+After=network.target
+
+[Service]
+Type=simple
+User=cloudboard
+Group=cloudboard
+WorkingDirectory=/opt/cloudboard-server
+Environment=NODE_ENV=production
+Environment=PORT=3443
+Environment=DATA_DIR=/var/lib/cloudboard-server
+ExecStart=/usr/bin/node /opt/cloudboard-server/node_modules/tsx/dist/cli.mjs /opt/cloudboard-server/server.ts
+Restart=on-failure
+NoNewPrivileges=true
+
+[Install]
+WantedBy=multi-user.target
