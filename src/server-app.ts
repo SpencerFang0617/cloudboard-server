@@ -73,7 +73,7 @@ export async function startServer(options: ServerOptions): Promise<RunningServer
     if (isPayloadTooLarge(error)) {
       res.status(400).json({
         code: -3,
-        msg: `内容超出大小限制, 当前限制: ${options.clipboardSize}`,
+        msg: `內容超出大小限制，目前上限：${options.clipboardSize}`,
       });
       return;
     }
@@ -123,7 +123,7 @@ export async function startServer(options: ServerOptions): Promise<RunningServer
   app.get('/api/v1/sync', async (req, res) => {
     const key = queryString(req.query.key);
     if (!key) {
-      res.status(400).json({ error: '缺少必要参数 `key`' });
+      res.status(400).json({ error: '缺少必要參數 `key`' });
       return;
     }
     try {
@@ -137,7 +137,7 @@ export async function startServer(options: ServerOptions): Promise<RunningServer
       });
     } catch (error) {
       console.error('讀取剪貼簿失敗', error);
-      res.status(500).json({ code: 500, msg: '服务器错误' });
+      res.status(500).json({ code: 500, msg: '伺服器錯誤' });
     }
   });
 
@@ -145,25 +145,25 @@ export async function startServer(options: ServerOptions): Promise<RunningServer
     try {
       const body = await readSyncBody(req, options.clipboardSize);
       if (!body.content || !body.key) {
-        res.status(400).json({ code: -1, msg: '缺少必要参数 `content` 或 `key`' });
+        res.status(400).json({ code: -1, msg: '缺少必要參數 `content` 或 `key`' });
         return;
       }
       if (!options.clipboardTypes.includes(body.type)) {
         res.status(400).json({
           code: -2,
-          msg: `不支持的内容类型, 当前启用类型: ${options.clipboardTypes.join(',')}`,
+          msg: `不支援的內容類型，目前啟用類型：${options.clipboardTypes.join(',')}`,
         });
         return;
       }
       const content = normalizeContent(body.type, body.content);
       if (!content) {
-        res.status(400).json({ code: -1, msg: '缺少必要参数 `content` 或 `key`' });
+        res.status(400).json({ code: -1, msg: '缺少必要參數 `content` 或 `key`' });
         return;
       }
       if (Buffer.byteLength(content, 'utf8') > options.clipboardSize) {
         res.status(400).json({
           code: -3,
-          msg: `内容超出大小限制, 当前限制: ${options.clipboardSize}`,
+          msg: `內容超出大小限制，目前上限：${options.clipboardSize}`,
         });
         return;
       }
@@ -176,23 +176,23 @@ export async function startServer(options: ServerOptions): Promise<RunningServer
       if (isTooBig(error)) {
         res.status(400).json({
           code: -3,
-          msg: `内容超出大小限制, 当前限制: ${options.clipboardSize}`,
+          msg: `內容超出大小限制，目前上限：${options.clipboardSize}`,
         });
         return;
       }
       console.error('更新剪貼簿失敗', error);
-      res.status(500).json({ code: 500, msg: '服务器错误' });
+      res.status(500).json({ code: 500, msg: '伺服器錯誤' });
     }
   });
 
   app.get('/api/v1/history', async (req, res) => {
     if (isAppleMobileClient(req.get('user-agent'), req.get('x-cloudboard-client'))) {
-      res.status(403).json({ code: 403, msg: '此客户端不提供剪贴板历史' });
+      res.status(403).json({ code: 403, msg: '此用戶端不提供剪貼簿歷史' });
       return;
     }
     const key = queryString(req.query.key);
     if (!key) {
-      res.status(400).json({ error: '缺少必要参数 `key`' });
+      res.status(400).json({ error: '缺少必要參數 `key`' });
       return;
     }
     try {
@@ -212,7 +212,7 @@ export async function startServer(options: ServerOptions): Promise<RunningServer
       });
     } catch (error) {
       console.error('讀取剪貼簿歷史失敗', error);
-      res.status(500).json({ code: 500, msg: '服务器错误' });
+      res.status(500).json({ code: 500, msg: '伺服器錯誤' });
     }
   });
 
